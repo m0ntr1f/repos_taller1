@@ -1,151 +1,1329 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>SkateShop Pro</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRUTALSKATE — Shop</title>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Barlow+Condensed:wght@400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --card: #181818;
+    --accent: #f5e642;
+    --red: #ff2d2d;
+    --white: #f0ede8;
+    --gray: #888;
+    --border: #2a2a2a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg);
+    border-bottom: 2px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    height: 60px;
+  }
+
+  .nav-logo {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 1.8rem;
+    color: var(--accent);
+    letter-spacing: -1px;
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--red); }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-family: 'Space Mono', monospace;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    padding: 4rem 2rem;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 40px,
+        rgba(245,230,66,0.03) 40px,
+        rgba(245,230,66,0.03) 42px
+      );
+  }
+
+  .hero-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    border: 1px solid var(--red);
+    padding: 4px 12px;
+    display: inline-block;
+    animation: blink 2s step-end infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .hero h1 {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: clamp(5rem, 18vw, 14rem);
+    line-height: 0.85;
+    letter-spacing: -4px;
+    color: var(--white);
+    position: relative;
+    z-index: 1;
+    animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .hero h1 .yellow { color: var(--accent); }
+  .hero h1 .red { color: var(--red); }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(60px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-sub {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-top: 1.5rem;
+    animation: slideUp 0.8s 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: var(--gray);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    animation: bounce 2s infinite;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 50px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  /* MARQUEE */
+  .marquee-wrap {
+    background: var(--accent);
+    overflow: hidden;
+    padding: 10px 0;
+    border-top: 2px solid #000;
+    border-bottom: 2px solid #000;
+  }
+
+  .marquee-track {
+    display: flex;
+    gap: 2rem;
+    white-space: nowrap;
+    animation: marquee 18s linear infinite;
+  }
+
+  .marquee-track span {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 1.1rem;
+    color: #000;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .marquee-track span.dot { color: var(--red); font-size: 1.4rem; }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* SECTION HEADER */
+  .section-header {
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+  }
+
+  .section-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--red);
+    letter-spacing: 2px;
+    padding-bottom: 4px;
+  }
+
+  .section-title {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1;
+    color: var(--white);
+  }
+
+  .section-title .hl { color: var(--accent); }
+
+  /* LAYOUT */
+  .container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .section {
+    padding: 6rem 0;
+  }
+
+  /* PRODUCT GRID */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5px;
+    background: var(--border);
+    border: 1.5px solid var(--border);
+  }
+
+  .product-card {
+    background: var(--card);
+    padding: 2rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s;
+    cursor: pointer;
+  }
+
+  .product-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+
+  .product-card:hover { background: #1f1f1f; }
+  .product-card:hover::before { transform: scaleX(1); }
+
+  .product-brand {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .product-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .product-name {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 1.4rem;
+    color: var(--white);
+    margin-bottom: 0.4rem;
+    line-height: 1.1;
+  }
+
+  .product-desc {
+    font-size: 0.85rem;
+    color: var(--gray);
+    margin-bottom: 1.5rem;
+    line-height: 1.4;
+    font-weight: 400;
+  }
+
+  .product-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .product-price {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 1.8rem;
+    color: var(--accent);
+  }
+
+  .product-price .currency {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--gray);
+    vertical-align: top;
+    margin-top: 6px;
+    display: inline-block;
+  }
+
+  .btn-add {
+    background: transparent;
+    border: 1.5px solid var(--white);
+    color: var(--white);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    padding: 8px 14px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+
+  .btn-add:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+  }
+
+  /* BRANDS GRID */
+  .brands-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1.5px solid var(--border);
+  }
+
+  .brand-item {
+    background: var(--card);
+    padding: 2rem 1rem;
+    text-align: center;
+    transition: background 0.2s;
+  }
+
+  .brand-item:hover { background: #1f1f1f; }
+
+  .brand-emoji {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 0.8rem;
+  }
+
+  .brand-name {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 1.1rem;
+    color: var(--white);
+    margin-bottom: 0.3rem;
+  }
+
+  .brand-origin {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--gray);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* SIZE TABLE */
+  .size-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+  }
+
+  .size-table th {
+    background: var(--accent);
+    color: #000;
+    padding: 12px 16px;
+    text-align: left;
+    letter-spacing: 2px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+  }
+
+  .size-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--gray);
+  }
+
+  .size-table tr:hover td { background: var(--card); color: var(--white); }
+  .size-table td:first-child { color: var(--white); font-weight: 700; }
+
+  /* SETUP CARD */
+  .setup-card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    padding: 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .setup-card::after {
+    content: 'SETUP';
+    position: absolute;
+    right: -2rem;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 8rem;
+    color: rgba(245,230,66,0.04);
+    pointer-events: none;
+  }
+
+  .setup-parts { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+
+  .setup-part {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    transition: border-color 0.2s;
+  }
+
+  .setup-part:hover { border-color: var(--accent); }
+
+  .setup-part-name {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 1.1rem;
+    color: var(--white);
+  }
+
+  .setup-part-brand {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--gray);
+    letter-spacing: 2px;
+    margin-top: 2px;
+  }
+
+  .setup-part-price {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 1.3rem;
+    color: var(--accent);
+  }
+
+  .setup-total {
+    border-top: 2px solid var(--accent);
+    padding-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .setup-total-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    color: var(--gray);
+    text-transform: uppercase;
+  }
+
+  .setup-total-price {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 2.5rem;
+    color: var(--white);
+  }
+
+  .setup-headline {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 3rem;
+    line-height: 0.9;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+  }
+
+  .setup-headline span { color: var(--accent); }
+
+  .setup-desc {
+    font-size: 1rem;
+    color: var(--gray);
+    line-height: 1.6;
+    font-weight: 400;
+    margin-bottom: 1.5rem;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    border: none;
+    color: #000;
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    padding: 16px 32px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    display: inline-block;
+    text-decoration: none;
+  }
+
+  .btn-primary:hover { background: var(--white); transform: translateX(4px); }
+
+  .setup-extras {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--gray);
+    letter-spacing: 2px;
+    line-height: 1.8;
+    margin-top: 1.5rem;
+  }
+
+  /* TIP STRIP */
+  .tip-strip {
+    background: var(--red);
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .tip-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .tip-text {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 1.1rem;
+    color: var(--white);
+    letter-spacing: 1px;
+  }
+
+  /* BADGE */
+  .badge {
+    display: inline-block;
+    background: var(--red);
+    color: var(--white);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 2px;
+    padding: 3px 8px;
+    text-transform: uppercase;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  .badge-yellow { background: var(--accent); color: #000; }
+
+  /* FOOTER */
+  footer {
+    background: var(--bg);
+    border-top: 2px solid var(--accent);
+    padding: 4rem 2rem 2rem;
+  }
+
+  .footer-grid {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .footer-logo {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 3rem;
+    color: var(--accent);
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .footer-logo span { color: var(--red); }
+
+  .footer-tagline {
+    color: var(--gray);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  .footer-col h4 {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+
+  .footer-col a {
+    color: var(--gray);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: color 0.2s;
+  }
+
+  .footer-col a:hover { color: var(--accent); }
+
+  .footer-bottom {
+    max-width: 1300px;
+    margin: 0 auto;
+    border-top: 1px solid var(--border);
+    padding-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-copy {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--gray);
+    letter-spacing: 2px;
+  }
+
+  .footer-skate {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 1rem;
+    color: var(--accent);
+    letter-spacing: 4px;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .setup-card { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .nav-links { display: none; }
+    .setup-card::after { display: none; }
+  }
+</style>
 </head>
 <body>
 
-<header>
-    <h1>🛹 SkateShop Pro</h1>
-    <div class="cart">
-        🛒 <span id="cart-count">0</span> | $<span id="total">0</span>
-    </div>
-</header>
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">BRUTAL<span>SK8</span></a>
+  <ul class="nav-links">
+    <li><a href="#tablas">Tablas</a></li>
+    <li><a href="#trucks">Trucks</a></li>
+    <li><a href="#ruedas">Ruedas</a></li>
+    <li><a href="#rodamientos">Rodamientos</a></li>
+    <li><a href="#lijas">Lijas</a></li>
+    <li><a href="#marcas">Marcas</a></li>
+    <li><a href="#setup">Setup</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-tag">★ New Drop 2025 ★ Envío gratis +$200</div>
+  <h1><span class="yellow">SKATE</span><br><span class="red">OR</span><br>DIE</h1>
+  <p class="hero-sub">Todo lo que necesitas — Nada más</p>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    SCROLL
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>BAKER</span><span class="dot">✦</span>
+    <span>ELEMENT</span><span class="dot">✦</span>
+    <span>BLIND</span><span class="dot">✦</span>
+    <span>GIRL</span><span class="dot">✦</span>
+    <span>THUNDER</span><span class="dot">✦</span>
+    <span>INDEPENDENT</span><span class="dot">✦</span>
+    <span>BONES</span><span class="dot">✦</span>
+    <span>SPITFIRE</span><span class="dot">✦</span>
+    <span>MOB GRIP</span><span class="dot">✦</span>
+    <span>SANTA CRUZ</span><span class="dot">✦</span>
+    <span>FLIP</span><span class="dot">✦</span>
+    <span>REAL</span><span class="dot">✦</span>
+    <span>BAKER</span><span class="dot">✦</span>
+    <span>ELEMENT</span><span class="dot">✦</span>
+    <span>BLIND</span><span class="dot">✦</span>
+    <span>GIRL</span><span class="dot">✦</span>
+    <span>THUNDER</span><span class="dot">✦</span>
+    <span>INDEPENDENT</span><span class="dot">✦</span>
+    <span>BONES</span><span class="dot">✦</span>
+    <span>SPITFIRE</span><span class="dot">✦</span>
+    <span>MOB GRIP</span><span class="dot">✦</span>
+    <span>SANTA CRUZ</span><span class="dot">✦</span>
+    <span>FLIP</span><span class="dot">✦</span>
+    <span>REAL</span><span class="dot">✦</span>
+  </div>
+</div>
+
+<!-- TIP STRIP -->
+<div class="tip-strip">
+  <span class="tip-label">PRO TIP</span>
+  <span class="tip-text">🛹 Setup de street recomendado: tabla 8.0" + trucks 149mm + ruedas 52mm 99A — el clásico que nunca falla</span>
+</div>
 
 <!-- TABLAS -->
-<section>
-    <h2>Tablas</h2>
-    <div class="productos">
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b" alt="tabla skate">
-            <h3>Tabla Profesional</h3>
-            <p>$80</p>
-            <button onclick="addToCart('Tabla', 80)">Agregar</button>
-        </div>
-
+<section class="section" id="tablas">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">01 /</span>
+      <h2 class="section-title"><span class="hl">TABLAS</span></h2>
     </div>
-</section>
-
-<!-- RUEDAS -->
-<section>
-    <h2>Ruedas</h2>
-    <div class="productos">
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1582738412147-0d6c6f6f7d98" alt="ruedas skate">
-            <h3>Ruedas 52mm</h3>
-            <p>$30</p>
-            <button onclick="addToCart('Ruedas', 30)">Agregar</button>
+    <div class="product-grid">
+      <div class="product-card">
+        <span class="product-brand">BAKER SKATEBOARDS</span>
+        <span class="product-icon">🛹</span>
+        <div class="product-name">Baker Brand Logo 8.0"</div>
+        <div class="product-desc">Maple canadiense 7 capas. La favorita de Andrew Reynolds. Street y park.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>85</div>
+          <button class="btn-add">+ AGREGAR</button>
         </div>
-
-    </div>
-</section>
-
-<!-- RODAMIENTOS -->
-<section>
-    <h2>Rodamientos</h2>
-    <div class="productos">
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1606813909027-5c9c8c3d93b7" alt="rodamientos">
-            <h3>Rodamientos ABEC-7</h3>
-            <p>$20</p>
-            <button onclick="addToCart('Rodamientos', 20)">Agregar</button>
+      </div>
+      <div class="product-card">
+        <span class="product-brand">ELEMENT SKATEBOARDS</span>
+        <span class="product-icon">🛹</span>
+        <div class="product-name">Element Section 8.25" <span class="badge badge-yellow">NEW</span></div>
+        <div class="product-desc">Maple 7 capas con epoxy de alta resistencia. Ideal para skaters intermedios.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>90</div>
+          <button class="btn-add">+ AGREGAR</button>
         </div>
-
+      </div>
+      <div class="product-card">
+        <span class="product-brand">BLIND SKATEBOARDS</span>
+        <span class="product-icon">🛹</span>
+        <div class="product-name">Blind Reaper 7.75"</div>
+        <div class="product-desc">Construcción ligera. Perfecta para flip tricks y skate técnico en la calle.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>80</div>
+          <button class="btn-add">+ AGREGAR</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <span class="product-brand">SANTA CRUZ</span>
+        <span class="product-icon">🛹</span>
+        <div class="product-name">Santa Cruz Classic 8.5"</div>
+        <div class="product-desc">Icono de la Costa Oeste. Ideal para bowl, vert y street. Concave profundo.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>95</div>
+          <button class="btn-add">+ AGREGAR</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <span class="product-brand">GIRL SKATEBOARDS</span>
+        <span class="product-icon">🛹</span>
+        <div class="product-name">Girl OG Logo 8.0" <span class="badge">HOT</span></div>
+        <div class="product-desc">Maple prémium. La marca de Mike Carroll y Rick Howard. Muy buscada.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>88</div>
+          <button class="btn-add">+ AGREGAR</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <span class="product-brand">FLIP SKATEBOARDS</span>
+        <span class="product-icon">🛹</span>
+        <div class="product-name">Flip Team Olivia 7.87"</div>
+        <div class="product-desc">Diseño artístico exclusivo. Construcción P2 — doble presión para mayor dureza.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>82</div>
+          <button class="btn-add">+ AGREGAR</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <span class="product-brand">REAL SKATEBOARDS</span>
+        <span class="product-icon">🛹</span>
+        <div class="product-name">Real Renewal Doves 8.38"</div>
+        <div class="product-desc">Tabla ancha para transición y street. Maple top de 7 capas seleccionadas.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>87</div>
+          <button class="btn-add">+ AGREGAR</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <span class="product-brand">POWELL PERALTA</span>
+        <span class="product-icon">🛹</span>
+        <div class="product-name">PP Dragon Formula 8.0"</div>
+        <div class="product-desc">Leyenda de los 80s. Tecnología Flight — más ligera y resistente que el maple tradicional.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>110</div>
+          <button class="btn-add">+ AGREGAR</button>
+        </div>
+      </div>
     </div>
+  </div>
 </section>
 
 <!-- TRUCKS -->
-<section>
-    <h2>Trucks</h2>
-    <div class="productos">
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1621939514649-280e2ee25f60" alt="trucks skate">
-            <h3>Trucks Pro</h3>
-            <p>$50</p>
-            <button onclick="addToCart('Trucks', 50)">Agregar</button>
-        </div>
-
+<section class="section" id="trucks" style="background: var(--surface);">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">02 /</span>
+      <h2 class="section-title"><span class="hl">TRUCKS</span></h2>
     </div>
-</section>
-
-<!-- LIJA -->
-<section>
-    <h2>Lijas</h2>
-    <div class="productos">
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1616627983921-5b7b0e92ce5c" alt="lija skate">
-            <h3>Lija Antideslizante</h3>
-            <p>$15</p>
-            <button onclick="addToCart('Lija', 15)">Agregar</button>
+    <div class="product-grid">
+      <div class="product-card">
+        <span class="product-brand">INDEPENDENT TRUCKS</span>
+        <span class="product-icon">⚙️</span>
+        <div class="product-name">Indy Stage 11 139mm <span class="badge">BEST SELLER</span></div>
+        <div class="product-desc">El truck más vendido del mundo. Bajo y sólido. Perfecto para tablas 7.75"–8.0".</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>65</div>
+          <button class="btn-add">+ AGREGAR</button>
         </div>
-
-    </div>
-</section>
-
-<!-- STICKERS -->
-<section>
-    <h2>Stickers</h2>
-    <div class="productos">
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1593032465171-8f0c7b9b1d6f" alt="stickers">
-            <h3>Pack Stickers</h3>
-            <p>$10</p>
-            <button onclick="addToCart('Stickers', 10)">Agregar</button>
+      </div>
+      <div class="product-card">
+        <span class="product-brand">INDEPENDENT TRUCKS</span>
+        <span class="product-icon">⚙️</span>
+        <div class="product-name">Indy Stage 11 149mm</div>
+        <div class="product-desc">Para tablas de 8.0"–8.5". El más estable en velocidad. Eje de acero grado 8.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>65</div>
+          <button class="btn-add">+ AGREGAR</button>
         </div>
-
+      </div>
+      <div class="product-card">
+        <span class="product-brand">THUNDER TRUCKS</span>
+        <span class="product-icon">⚙️</span>
+        <div class="product-name">Thunder 148 Team Edition <span class="badge badge-yellow">NEW</span></div>
+        <div class="product-desc">Giro más responsive. Favorito de skaters de street técnico. Ultra ligero.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>62</div>
+          <button class="btn-add">+ AGREGAR</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <span class="product-brand">THUNDER TRUCKS</span>
+        <span class="product-icon">⚙️</span>
+        <div class="product-name">Thunder 147 Hi</div>
+        <div class="product-desc">Altura alta para mayor espacio con ruedas grandes. Ideal para bowl y cruising.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>60</div>
+          <button class="btn-add">+ AGREGAR</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <span class="product-brand">VENTURE TRUCKS</span>
+        <span class="product-icon">⚙️</span>
+        <div class="product-name">Venture Team 5.25 Lo</div>
+        <div class="product-desc">Bajo y preciso. Popular en skate de escaleras y grind en barras.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>58</div>
+          <button class="btn-add">+ AGREGAR</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <span class="product-brand">TENSOR TRUCKS</span>
+        <span class="product-icon">⚙️</span>
+        <div class="product-name">Tensor Alloys 5.0</div>
+        <div class="product-desc">Aleación de aluminio-magnesio. El truck más ligero del mercado. Responsive y fuerte.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>70</div>
+          <button class="btn-add">+ AGREGAR</button>
+        </div>
+      </div>
     </div>
+    <div style="margin-top:3rem;">
+      <div class="section-header" style="margin-bottom:1.5rem;">
+        <span class="section-num">GUÍA /</span>
+        <h3 class="section-title" style="font-size:1.8rem;">Tallas de <span class="hl">TRUCKS</span></h3>
+      </div>
+      <table class="size-table">
+        <thead>
+          <tr><th>Tabla</th><th>Independent</th><th>Thunder</th><th>Venture</th><th>Tensor</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>7.5" – 7.75"</td><td>Stage 11 / 129</td><td>145</td><td>5.0 Lo</td><td>4.5</td></tr>
+          <tr><td>7.75" – 8.0"</td><td>Stage 11 / 139</td><td>147</td><td>5.0 Hi</td><td>5.0</td></tr>
+          <tr><td>8.0" – 8.5"</td><td>Stage 11 / 149</td><td>148</td><td>5.25</td><td>5.25</td></tr>
+          <tr><td>8.5" – 9.0"</td><td>Stage 11 / 159</td><td>151</td><td>5.5</td><td>5.5</td></tr>
+          <tr><td>9.0"+</td><td>Stage 11 / 169</td><td>161</td><td>6.0</td><td>6.0</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </section>
 
-<!-- CHECKOUT -->
-<section class="checkout">
-    <h2>🧾 Tu carrito</h2>
-    <ul id="cart-items"></ul>
-    <button class="buy" onclick="buy()">Comprar</button>
+<!-- RUEDAS -->
+<section class="section" id="ruedas">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">03 /</span>
+      <h2 class="section-title"><span class="hl">RUEDAS</span></h2>
+    </div>
+    <div class="product-grid">
+      <div class="product-card">
+        <span class="product-brand">SPITFIRE WHEELS</span>
+        <span class="product-icon">🔥</span>
+        <div class="product-name">Spitfire Formula Four 52mm 99A <span class="badge">BEST SELLER</span></div>
+        <div class="product-desc">Uretano de alta resistencia. No se aplana. La rueda de street por excelencia.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>42</div>
+          <button class="btn-add">+ AGREGAR</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <span class="product-brand">SPITFIRE WHEELS</span>
+        <span class="product-icon">🔥</span>
+        <div class="product-name">Spitfire Classic 54mm 99A</div>
+        <div class="product-desc">La rueda original de Spitfire desde 1987. Velocidad y durabilidad para todo terreno.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>38</div>
+          <button class="btn-add">+ AGREGAR</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <span class="product-brand">BONES WHEELS</span>
+        <span class="product-icon">💀</span>
+        <div class="product-name">Bones STF V1 52mm 103A <span class="badge badge-yellow">PRO</span></div>
+        <div class="product-desc">Street Tech Formula. Súper duras, ruedan más rápido en concreto. No marcan la pista.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>45</div>
+          <button class="btn-add">+ AGREGAR</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <span class="product-brand">BONES WHEELS</span>
+        <span class="product-icon">💀</span>
+        <div class="product-name">Bones SPF 58mm 101A</div>
+        <div class="product-desc">Skate Park Formula. Para rampas y superficies lisas. Muy veloz en indoor.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>48</div>
+          <button class="btn-add">+ AGREGAR</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <span class="product-brand">RICTA WHEELS</span>
+        <span class="product-icon">⭕</span>
+        <div class="product-name">Ricta Clouds 54mm 92A</div>
+        <div class="product-desc">Ruedas blandas para cruising en calle irregular. Absorben golpes perfectamente.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>40</div>
+          <button class="btn-add">+ AGREGAR</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <span class="product-brand">OJ WHEELS</span>
+        <span class="product-icon">⭕</span>
+        <div class="product-name">OJ Super Juice 60mm 78A</div>
+        <div class="product-desc">Ruedas blandas para cruiser. Grip increíble en cualquier superficie de ciudad.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>36</div>
+          <button class="btn-add">+ AGREGAR</button>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:3rem;">
+      <div class="section-header" style="margin-bottom:1.5rem;">
+        <span class="section-num">GUÍA /</span>
+        <h3 class="section-title" style="font-size:1.8rem;">Dureza <span class="hl">(DUROMETER)</span></h3>
+      </div>
+      <table class="size-table">
+        <thead>
+          <tr><th>Dureza</th><th>Tipo de uso</th><th>Terreno ideal</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>78A – 87A</td><td>Cruising / Longboard</td><td>Asfalto rugoso, grietas</td></tr>
+          <tr><td>88A – 95A</td><td>All-around / Principiante</td><td>Calle, parque</td></tr>
+          <tr><td>96A – 99A</td><td>Street / Park estándar</td><td>Skatepark, concreto liso</td></tr>
+          <tr><td>100A – 101A</td><td>Skatepark pro</td><td>Superficies muy lisas</td></tr>
+          <tr><td>101A+</td><td>Competencia / Indoor</td><td>Madera pulida, cemento liso</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </section>
 
-<!-- CONTACTO -->
-<section class="contacto">
-    <h2>📱 Contacto</h2>
-    <p>WhatsApp: <strong>+591 700 12345</strong></p>
+<!-- RODAMIENTOS -->
+<section class="section" id="rodamientos" style="background: var(--surface);">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">04 /</span>
+      <h2 class="section-title"><span class="hl">RODAMIENTOS</span></h2>
+    </div>
+    <div class="product-grid">
+      <div class="product-card">
+        <span class="product-brand">BONES BEARINGS</span>
+        <span class="product-icon">🔩</span>
+        <div class="product-name">Bones Reds <span class="badge">CLÁSICO</span></div>
+        <div class="product-desc">El rodamiento más famoso del skateboarding. Precio imbatible, velocidad excelente. El estándar de la industria.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>18</div>
+          <button class="btn-add">+ AGREGAR</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <span class="product-brand">BONES BEARINGS</span>
+        <span class="product-icon">🔩</span>
+        <div class="product-name">Bones Swiss <span class="badge badge-yellow">PREMIUM</span></div>
+        <div class="product-desc">Fabricado en Suiza. El rodamiento más rápido y suave. Acero de alta precisión.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>50</div>
+          <button class="btn-add">+ AGREGAR</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <span class="product-brand">BONES BEARINGS</span>
+        <span class="product-icon">🔩</span>
+        <div class="product-name">Bones Super Reds</div>
+        <div class="product-desc">Un nivel sobre los Reds. Tolerancias más ajustadas. Ideal para skaters frecuentes.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>28</div>
+          <button class="btn-add">+ AGREGAR</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <span class="product-brand">INDEPENDENT</span>
+        <span class="product-icon">🔩</span>
+        <div class="product-name">Independent Genuine Parts</div>
+        <div class="product-desc">Acero de alto carbono. Prelubricado con aceite de baja viscosidad para máxima velocidad.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>22</div>
+          <button class="btn-add">+ AGREGAR</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <span class="product-brand">SPITFIRE / CHEAPSHOTS</span>
+        <span class="product-icon">🔩</span>
+        <div class="product-name">Spitfire Cheapshots</div>
+        <div class="product-desc">Rodamiento económico de entrada. Gran relación calidad-precio para principiantes.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>14</div>
+          <button class="btn-add">+ AGREGAR</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <span class="product-brand">BRONSON SPEED CO.</span>
+        <span class="product-icon">🔩</span>
+        <div class="product-name">Bronson G3 <span class="badge badge-yellow">NEW</span></div>
+        <div class="product-desc">Tecnología Dirt Shield. Los rodamientos más resistentes a la suciedad del mercado.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>35</div>
+          <button class="btn-add">+ AGREGAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
+
+<!-- LIJAS -->
+<section class="section" id="lijas">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">05 /</span>
+      <h2 class="section-title"><span class="hl">LIJA</span></h2>
+    </div>
+    <div class="product-grid">
+      <div class="product-card">
+        <span class="product-brand">MOB GRIP</span>
+        <span class="product-icon">📋</span>
+        <div class="product-name">Mob Grip Black <span class="badge">BEST SELLER</span></div>
+        <div class="product-desc">La lija más usada en el mundo. Agarre superior, duradera. Estándar profesional. 9" × 33".</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>12</div>
+          <button class="btn-add">+ AGREGAR</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <span class="product-brand">JESSUP GRIPTAPE</span>
+        <span class="product-icon">📋</span>
+        <div class="product-name">Jessup Ultra Black</div>
+        <div class="product-desc">La lija original desde 1975. Más suave que MOB. Popular para freestyle y cruising.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>10</div>
+          <button class="btn-add">+ AGREGAR</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <span class="product-brand">GRIZZLY GRIP</span>
+        <span class="product-icon">🐻</span>
+        <div class="product-name">Grizzly OG Bear <span class="badge badge-yellow">COLLAB</span></div>
+        <div class="product-desc">Diseños icónicos del oso Grizzly. Misma calidad que MOB con prints exclusivos.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>14</div>
+          <button class="btn-add">+ AGREGAR</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <span class="product-brand">SANTA CRUZ</span>
+        <span class="product-icon">📋</span>
+        <div class="product-name">Santa Cruz SC Strip</div>
+        <div class="product-desc">Tiras de grip para personalizar tu setup. Buena alternativa a hoja completa.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>9</div>
+          <button class="btn-add">+ AGREGAR</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <span class="product-brand">SHAKE JUNT</span>
+        <span class="product-icon">📋</span>
+        <div class="product-name">Shake Junt Chicken Bone Black</div>
+        <div class="product-desc">Granulado extra grueso para skaters que buscan el máximo grip posible.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>11</div>
+          <button class="btn-add">+ AGREGAR</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <span class="product-brand">ELEMENT SKATEBOARDS</span>
+        <span class="product-icon">📋</span>
+        <div class="product-name">Element Grip Clear</div>
+        <div class="product-desc">Lija transparente para mostrar el gráfico de tu tabla. Agarre efectivo sin tapar el diseño.</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="currency">$ </span>13</div>
+          <button class="btn-add">+ AGREGAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARCAS -->
+<section class="section" id="marcas" style="background: var(--surface);">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">06 /</span>
+      <h2 class="section-title">NUESTRAS <span class="hl">MARCAS</span></h2>
+    </div>
+    <div class="brands-grid">
+      <div class="brand-item"><span class="brand-emoji">🛹</span><div class="brand-name">BAKER</div><div class="brand-origin">USA · Street</div></div>
+      <div class="brand-item"><span class="brand-emoji">🛹</span><div class="brand-name">ELEMENT</div><div class="brand-origin">USA · All-around</div></div>
+      <div class="brand-item"><span class="brand-emoji">🛹</span><div class="brand-name">BLIND</div><div class="brand-origin">USA · Street</div></div>
+      <div class="brand-item"><span class="brand-emoji">🛹</span><div class="brand-name">SANTA CRUZ</div><div class="brand-origin">USA · Bowl/Vert</div></div>
+      <div class="brand-item"><span class="brand-emoji">🛹</span><div class="brand-name">GIRL</div><div class="brand-origin">USA · Street</div></div>
+      <div class="brand-item"><span class="brand-emoji">🛹</span><div class="brand-name">FLIP</div><div class="brand-origin">UK · Street</div></div>
+      <div class="brand-item"><span class="brand-emoji">🛹</span><div class="brand-name">REAL</div><div class="brand-origin">USA · Street</div></div>
+      <div class="brand-item"><span class="brand-emoji">🛹</span><div class="brand-name">POWELL PERALTA</div><div class="brand-origin">USA · Legend</div></div>
+      <div class="brand-item"><span class="brand-emoji">⚙️</span><div class="brand-name">INDEPENDENT</div><div class="brand-origin">USA · Trucks</div></div>
+      <div class="brand-item"><span class="brand-emoji">⚙️</span><div class="brand-name">THUNDER</div><div class="brand-origin">USA · Trucks</div></div>
+      <div class="brand-item"><span class="brand-emoji">⚙️</span><div class="brand-name">VENTURE</div><div class="brand-origin">USA · Trucks</div></div>
+      <div class="brand-item"><span class="brand-emoji">⚙️</span><div class="brand-name">TENSOR</div><div class="brand-origin">USA · Trucks</div></div>
+      <div class="brand-item"><span class="brand-emoji">🔥</span><div class="brand-name">SPITFIRE</div><div class="brand-origin">USA · Ruedas</div></div>
+      <div class="brand-item"><span class="brand-emoji">💀</span><div class="brand-name">BONES</div><div class="brand-origin">USA · Ruedas/Rodamientos</div></div>
+      <div class="brand-item"><span class="brand-emoji">⭕</span><div class="brand-name">RICTA</div><div class="brand-origin">USA · Ruedas</div></div>
+      <div class="brand-item"><span class="brand-emoji">📋</span><div class="brand-name">MOB GRIP</div><div class="brand-origin">USA · Lija</div></div>
+      <div class="brand-item"><span class="brand-emoji">📋</span><div class="brand-name">JESSUP</div><div class="brand-origin">USA · Lija</div></div>
+      <div class="brand-item"><span class="brand-emoji">🐻</span><div class="brand-name">GRIZZLY</div><div class="brand-origin">USA · Lija</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SETUP COMPLETO -->
+<section class="section" id="setup">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">07 /</span>
+      <h2 class="section-title">SETUP <span class="hl">COMPLETO</span></h2>
+    </div>
+    <div class="setup-card">
+      <div>
+        <ul class="setup-parts">
+          <li class="setup-part">
+            <div>
+              <div class="setup-part-name">🛹 Tabla Baker Brand Logo 8.0"</div>
+              <div class="setup-part-brand">BAKER SKATEBOARDS</div>
+            </div>
+            <div class="setup-part-price">$85</div>
+          </li>
+          <li class="setup-part">
+            <div>
+              <div class="setup-part-name">⚙️ Trucks Independent Stage 11 149mm (x2)</div>
+              <div class="setup-part-brand">INDEPENDENT TRUCKS</div>
+            </div>
+            <div class="setup-part-price">$65</div>
+          </li>
+          <li class="setup-part">
+            <div>
+              <div class="setup-part-name">🔥 Ruedas Spitfire F4 52mm 99A (x4)</div>
+              <div class="setup-part-brand">SPITFIRE WHEELS</div>
+            </div>
+            <div class="setup-part-price">$42</div>
+          </li>
+          <li class="setup-part">
+            <div>
+              <div class="setup-part-name">🔩 Rodamientos Bones Reds (x8)</div>
+              <div class="setup-part-brand">BONES BEARINGS</div>
+            </div>
+            <div class="setup-part-price">$18</div>
+          </li>
+          <li class="setup-part">
+            <div>
+              <div class="setup-part-name">📋 Lija MOB Grip Black 9×33"</div>
+              <div class="setup-part-brand">MOB GRIP</div>
+            </div>
+            <div class="setup-part-price">$12</div>
+          </li>
+        </ul>
+        <div class="setup-total">
+          <div class="setup-total-label">TOTAL DEL SETUP</div>
+          <div class="setup-total-price">$222</div>
+        </div>
+      </div>
+      <div>
+        <div class="setup-headline">BUILD<br>YOUR<br><span>SETUP</span></div>
+        <p class="setup-desc">El setup perfecto de street para principiantes e intermedios. Todo lo que necesitas para empezar o mejorar tu nivel. Ya ensamblado y listo para rodar.</p>
+        <a href="#" class="btn-primary">ARMAR MI SETUP →</a>
+        <div class="setup-extras">
+          ✓ ENVÍO GRATIS<br>
+          ✓ ENSAMBLADO PROFESIONAL<br>
+          ✓ GARANTÍA 6 MESES
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo">BRUTAL<span>SK8</span></div>
+      <p class="footer-tagline">Tu skate shop de confianza desde 2015.<br>Todo lo que necesitas para rodar, nada más.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Productos</h4>
+      <ul>
+        <li><a href="#tablas">Tablas</a></li>
+        <li><a href="#trucks">Trucks</a></li>
+        <li><a href="#ruedas">Ruedas</a></li>
+        <li><a href="#rodamientos">Rodamientos</a></li>
+        <li><a href="#lijas">Lija</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Info</h4>
+      <ul>
+        <li><a href="#">Guía de tallas</a></li>
+        <li><a href="#">Cómo armar tu tabla</a></li>
+        <li><a href="#">Blog de trucos</a></li>
+        <li><a href="#">Envíos y devoluciones</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contacto</h4>
+      <ul>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">TikTok</a></li>
+        <li><a href="#">WhatsApp</a></li>
+        <li><a href="#">brutalsk8@mail.com</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 BRUTALSK8 — Todos los derechos reservados</div>
+    <div class="footer-skate">SKATE OR DIE ✦</div>
+  </div>
+</footer>
 
 <script>
-let cart = [];
-let total = 0;
-
-function addToCart(name, price) {
-    cart.push({name, price});
-    total += price;
-
-    document.getElementById("cart-count").innerText = cart.length;
-    document.getElementById("total").innerText = total;
-
-    updateCart();
-}
-
-function updateCart() {
-    const list = document.getElementById("cart-items");
-    list.innerHTML = "";
-
-    cart.forEach(item => {
-        let li = document.createElement("li");
-        li.textContent = item.name + " - $" + item.price;
-        list.appendChild(li);
+  // Smooth scroll with nav offset
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        window.scrollTo({ top: target.offsetTop - 70, behavior: 'smooth' });
+      }
     });
-}
+  });
 
-function buy() {
-    alert("Compra simulada 😎");
-}
+  // Add to cart feedback
+  document.querySelectorAll('.btn-add').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const original = this.textContent;
+      this.textContent = '✓ LISTO';
+      this.style.background = 'var(--accent)';
+      this.style.borderColor = 'var(--accent)';
+      this.style.color = '#000';
+      setTimeout(() => {
+        this.textContent = original;
+        this.style.background = '';
+        this.style.borderColor = '';
+        this.style.color = '';
+      }, 1500);
+    });
+  });
 </script>
-
 </body>
 </html>
