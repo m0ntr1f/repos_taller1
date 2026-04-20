@@ -2,56 +2,87 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Tienda Skate</title>
+    <title>SkateShop Pro</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
-    <h1>SkateShop</h1>
-    <nav>
-        <ul>
-            <li><a href="#">Inicio</a></li>
-            <li><a href="#">Productos</a></li>
-            <li><a href="#">Contacto</a></li>
-        </ul>
-    </nav>
+    <h1>🛹 SkateShop</h1>
+    <div class="cart">
+        🛒 Carrito: <span id="cart-count">0</span> | $<span id="total">0</span>
+    </div>
 </header>
 
-<section class="hero">
-    <h2>Las mejores tablas de skate</h2>
-    <p>Calidad profesional al mejor precio</p>
-</section>
-
 <section class="productos">
-    <h2>Productos</h2>
 
     <div class="card">
-        <img src="https://via.placeholder.com/200" alt="Skate 1">
+        <img src="https://via.placeholder.com/250" alt="">
         <h3>Skate Pro X</h3>
         <p>$80</p>
-        <button>Comprar</button>
+        <button onclick="addToCart('Skate Pro X', 80)">Agregar</button>
     </div>
 
     <div class="card">
-        <img src="https://via.placeholder.com/200" alt="Skate 2">
+        <img src="https://via.placeholder.com/250" alt="">
         <h3>Skate Street</h3>
         <p>$65</p>
-        <button>Comprar</button>
+        <button onclick="addToCart('Skate Street', 65)">Agregar</button>
     </div>
 
     <div class="card">
-        <img src="https://via.placeholder.com/200" alt="Skate 3">
+        <img src="https://via.placeholder.com/250" alt="">
         <h3>Skate Cruiser</h3>
         <p>$70</p>
-        <button>Comprar</button>
+        <button onclick="addToCart('Skate Cruiser', 70)">Agregar</button>
     </div>
 
 </section>
 
-<footer>
-    <p>© 2026 SkateShop - Todos los derechos reservados</p>
-</footer>
+<section class="checkout">
+    <h2>Resumen de compra</h2>
+    <ul id="cart-items"></ul>
+    <button class="buy" onclick="buy()">Comprar</button>
+</section>
+
+<script>
+let cart = [];
+let total = 0;
+
+function addToCart(name, price) {
+    cart.push({name, price});
+    total += price;
+
+    document.getElementById("cart-count").innerText = cart.length;
+    document.getElementById("total").innerText = total;
+
+    updateCart();
+}
+
+function updateCart() {
+    const list = document.getElementById("cart-items");
+    list.innerHTML = "";
+
+    cart.forEach(item => {
+        let li = document.createElement("li");
+        li.textContent = item.name + " - $" + item.price;
+        list.appendChild(li);
+    });
+}
+
+function buy() {
+    if(cart.length === 0){
+        alert("Tu carrito está vacío");
+    } else {
+        alert("Compra realizada con éxito 🎉");
+        cart = [];
+        total = 0;
+        updateCart();
+        document.getElementById("cart-count").innerText = 0;
+        document.getElementById("total").innerText = 0;
+    }
+}
+</script>
 
 </body>
 </html>
