@@ -10,40 +10,71 @@
 <header>
     <h1>🛹 SkateShop</h1>
     <div class="cart">
-        🛒 Carrito: <span id="cart-count">0</span> | $<span id="total">0</span>
+        🛒 <span id="cart-count">0</span> productos | $<span id="total">0</span>
     </div>
 </header>
 
 <section class="productos">
 
     <div class="card">
-        <img src="https://via.placeholder.com/250" alt="">
-        <h3>Skate Pro X</h3>
+        <img src="https://images.unsplash.com/photo-1600180758890-6b94519a8ba6" alt="">
+        <h3>Tabla Skate Pro</h3>
         <p>$80</p>
-        <button onclick="addToCart('Skate Pro X', 80)">Agregar</button>
+        <button onclick="addToCart('Tabla Skate Pro', 80)">Agregar</button>
     </div>
 
     <div class="card">
-        <img src="https://via.placeholder.com/250" alt="">
-        <h3>Skate Street</h3>
-        <p>$65</p>
-        <button onclick="addToCart('Skate Street', 65)">Agregar</button>
+        <img src="https://images.unsplash.com/photo-1596464716127-f2a82984de30" alt="">
+        <h3>Ruedas Skate</h3>
+        <p>$30</p>
+        <button onclick="addToCart('Ruedas Skate', 30)">Agregar</button>
     </div>
 
     <div class="card">
-        <img src="https://via.placeholder.com/250" alt="">
-        <h3>Skate Cruiser</h3>
-        <p>$70</p>
-        <button onclick="addToCart('Skate Cruiser', 70)">Agregar</button>
+        <img src="https://images.unsplash.com/photo-1616627983921-5b7b0e92ce5c" alt="">
+        <h3>Rodamientos</h3>
+        <p>$20</p>
+        <button onclick="addToCart('Rodamientos', 20)">Agregar</button>
+    </div>
+
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1616627983880-2bb18ce87140" alt="">
+        <h3>Trucks</h3>
+        <p>$50</p>
+        <button onclick="addToCart('Trucks', 50)">Agregar</button>
+    </div>
+
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1616627983901-daf4e1d3b9c0" alt="">
+        <h3>Lija Skate</h3>
+        <p>$15</p>
+        <button onclick="addToCart('Lija Skate', 15)">Agregar</button>
+    </div>
+
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1606813909027-5c9c8c3d93b7" alt="">
+        <h3>Pack Stickers</h3>
+        <p>$10</p>
+        <button onclick="addToCart('Stickers', 10)">Agregar</button>
     </div>
 
 </section>
 
 <section class="checkout">
-    <h2>Resumen de compra</h2>
+    <h2>🧾 Resumen</h2>
     <ul id="cart-items"></ul>
     <button class="buy" onclick="buy()">Comprar</button>
 </section>
+
+<section class="contacto">
+    <h2>📱 Contacto</h2>
+    <p>¿Tienes dudas? Escríbenos:</p>
+    <p class="telefono">+591 700 12345</p>
+</section>
+
+<footer>
+    <p>© 2026 SkateShop</p>
+</footer>
 
 <script>
 let cart = [];
@@ -74,7 +105,7 @@ function buy() {
     if(cart.length === 0){
         alert("Tu carrito está vacío");
     } else {
-        alert("Compra realizada con éxito 🎉");
+        alert("Compra realizada 🎉 Te contactaremos pronto");
         cart = [];
         total = 0;
         updateCart();
