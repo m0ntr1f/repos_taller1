@@ -1,70 +1,72 @@
-/* Reset básico */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* Body */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #c3ec52, #0ba360);
-    color: #fff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #111;
+    color: white;
+    padding: 15px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    height: 100vh;
 }
 
-/* Contenedor */
-.container {
+header ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+}
+
+header a {
+    color: white;
+    text-decoration: none;
+}
+
+.hero {
+    background: url('https://via.placeholder.com/1200x400') no-repeat center;
+    background-size: cover;
+    color: white;
     text-align: center;
-    background-color: rgba(0, 0, 0, 0.4);
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    padding: 100px 20px;
 }
 
-/* Header */
-header h1 {
-    font-size: 2.5em;
-    margin-bottom: 10px;
+.productos {
+    padding: 20px;
+    text-align: center;
 }
 
-header p {
-    font-size: 1.2em;
-    margin-bottom: 30px;
+.card {
+    display: inline-block;
+    background: white;
+    margin: 15px;
+    padding: 15px;
+    width: 200px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
 }
 
-/* Main */
-main p {
-    margin: 20px 0;
-    font-size: 1.2em;
-}
-
-.icon {
-    width: 80px;
-    margin-bottom: 20px;
+.card img {
+    width: 100%;
 }
 
 button {
-    padding: 12px 25px;
-    font-size: 1em;
-    background-color: #ffbb33;
-    color: #333;
+    background-color: #111;
+    color: white;
     border: none;
-    border-radius: 10px;
+    padding: 10px;
     cursor: pointer;
-    transition: 0.3s;
 }
 
 button:hover {
-    background-color: #ffdd66;
+    background-color: #444;
 }
 
-/* Footer */
 footer {
-    margin-top: 30px;
-    font-size: 0.9em;
-    color: #eee;
+    background-color: #111;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin-top: 20px;
 }
