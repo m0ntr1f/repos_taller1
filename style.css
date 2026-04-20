@@ -1,90 +1,95 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', sans-serif;
     margin: 0;
-    background: #f0f0f0;
+    background: #0f0f0f;
+    color: white;
 }
 
 /* HEADER */
 header {
-    background: #000;
-    color: white;
-    padding: 15px;
+    background: black;
+    padding: 20px;
     display: flex;
     justify-content: space-between;
+    font-size: 20px;
+}
+
+/* SECCIONES */
+section {
+    padding: 30px;
+}
+
+h2 {
+    margin-bottom: 15px;
+    border-left: 5px solid #00ffcc;
+    padding-left: 10px;
 }
 
 /* PRODUCTOS */
 .productos {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    padding: 20px;
+    gap: 20px;
 }
 
+/* CARD GRANDE */
 .card {
-    background: white;
-    margin: 15px;
-    padding: 15px;
-    width: 250px;
-    border-radius: 15px;
-    text-align: center;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    background: #1c1c1c;
+    width: 300px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
     transition: 0.3s;
 }
 
 .card:hover {
-    transform: scale(1.05);
+    transform: scale(1.07);
 }
 
+/* IMAGEN MÁS GRANDE */
 .card img {
     width: 100%;
-    border-radius: 10px;
+    height: 220px;
+    object-fit: cover;
+}
+
+/* CONTENIDO */
+.card h3 {
+    margin: 10px;
+}
+
+.card p {
+    margin: 10px;
+    font-size: 18px;
+    color: #00ffcc;
 }
 
 /* BOTONES */
 button {
-    background: black;
-    color: white;
+    margin: 10px;
+    padding: 12px;
+    width: calc(100% - 20px);
     border: none;
-    padding: 10px;
+    border-radius: 10px;
+    background: #00ffcc;
+    color: black;
+    font-weight: bold;
     cursor: pointer;
-    border-radius: 8px;
 }
 
 button:hover {
-    background: #444;
-}
-
-.buy {
-    background: green;
+    background: #00ccaa;
 }
 
 /* CHECKOUT */
 .checkout {
-    background: white;
-    margin: 20px;
-    padding: 20px;
+    background: #1a1a1a;
     border-radius: 15px;
 }
 
 /* CONTACTO */
 .contacto {
     text-align: center;
-    padding: 20px;
-    background: #111;
-    color: white;
-}
-
-.telefono {
-    font-size: 24px;
-    font-weight: bold;
-    color: #00ffcc;
-}
-
-/* FOOTER */
-footer {
-    text-align: center;
-    padding: 10px;
-    background: #000;
-    color: white;
+    background: black;
+    font-size: 18px;
 }
